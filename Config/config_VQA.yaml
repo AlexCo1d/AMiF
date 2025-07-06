@@ -1,0 +1,74 @@
+# config file for VQA
+
+# model
+vision_encoder: "clip16"
+image_size: 288  # Resolution after processing
+clip16:
+  vit: "ViT-B/16"
+  patch_size: 16
+clip32:
+  vit: "ViT-B/32"
+  patch_size: 32
+vit:
+  vit: "/home/data/Jingkai/alex/weight/deit_base_patch16_224.pth" # Path or name of the pretrained ViT model
+  patch_size: 16
+
+text_encoder: "bioclinicalbert"
+text_decoder: "bioclinicalbert"
+roberta:
+  text_encoder_path: "roberta-base"  # Path or name of the pretrained RoBERTa model
+  freeze: False  # Whether to freeze the weights of the text encoder
+bert:
+  text_encoder_path: "/home/Jingkai/alex/backbone/bert-base-uncased"  # Path or name of the pretrained BERT model
+  freeze: False  # Whether to freeze the weights of the text encoder
+bioclinicalbert:
+  text_encoder_path: "/home/Jingkai/alex/backbone/clinical_bert"  # Path or name of the pretrained MedCLIP model
+  freeze: False  # Whether to freeze the weights of the text encoder
+
+
+# model settings
+cross_modal_layer: 6
+use_gated_cross_attention: True
+
+max_txt_length: 30  # Maximum length of the input text
+max_prior_length: 3000  # Maximum length of the prior knowledge
+prior_mode: 'vocab'  # 'sentence' or 'vocab' for prior knowledge
+hidden_size: 768  # As per your projection layer input size
+
+
+# load model's weight path
+load_path:
+  - "/home/data/Jingkai/alex/vqa_pathvqa_mmf16/ckpt/epoch=69-step=38009-overall=0.6418.ckpt" #- "/home/data/Jingkai/alex/pretrain_mmf16x/ckpt/epoch=3-step=7444-val_metric=0.2749.ckpt"
+
+resume_checkpoint: ""   # "/home/data/Jingkai/alex/pretrain_mm/old.ckpt"   # Path to checkpoint to resume training; empty string means no checkpoint is loaded
+
+
+# dataset path
+dataset_path: "/home/data/Jingkai/alex/pathvqa"
+dataset: "pathvqa"  # Dataset name: radvqa | pathvqa | slake | vqa2019
+
+# output setting
+save_path: "/home/data/Jingkai/alex/vqa_pathvqa_mmf16-1/"
+log_freq: 2
+
+
+# validation
+valid:
+  val_batch_size: 16
+  val_step_freq: 0.1
+  monitor: "overall"
+
+# training parameters
+max_epochs: 3
+accumulate_grad_steps: 1
+lr: 1.5e-5
+weight_decay: 0.05
+
+batch_size: 24
+
+num_gpus: 2
+device:
+  - 4
+  - 5
+
+precision: 16-mixed

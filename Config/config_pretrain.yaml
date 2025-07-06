@@ -1,0 +1,99 @@
+# config file
+
+# model
+vision_encoder: "clip16"
+image_size: 288  # Resolution after processing
+clip16:
+  vit: "ViT-B/16"
+  patch_size: 16
+  freeze: False  # Whether to freeze the weights of the text encoder
+clip32:
+  vit: "ViT-B/32"
+  patch_size: 32
+  freeze: False  # Whether to freeze the weights of the text encoder
+vit:
+  vit: "/home/data/Jingkai/alex/weight/deit_base_patch16_224.pth" # Path or name of the pretrained ViT model
+  patch_size: 16
+  freeze: False  # Whether to freeze the weights of the text encoder
+
+text_encoder: "bioclinicalbert"
+roberta:
+  text_encoder_path: "roberta-base"  # Path or name of the pretrained RoBERTa model
+  freeze: False  # Whether to freeze the weights of the text encoder
+bert:
+  text_encoder_path: "/home/Jingkai/alex/backbone/bert-base-uncased"  # Path or name of the pretrained BERT model
+  freeze: False  # Whether to freeze the weights of the text encoder
+bioclinicalbert:
+  text_encoder_path: "/home/Jingkai/alex/backbone/clinical_bert"  # Path or name of the pretrained MedCLIP model
+  freeze: False  # Whether to freeze the weights of the text encoder
+
+KD_model:
+  load_path: "/home/Jingkai/alex/backbone/biomedclip"
+
+max_txt_length: 120  # Maximum length of the input text
+
+hidden_size: 768  # As per your projection layer input size
+#local_proj_dim: 256
+#queue_size: 65536
+
+temperature_1: 0.07
+temperature_2: 0.07
+temperature_3: 0.07
+temperature_4: 0.07
+coef_softlabel_target: 0.01
+
+# Model module setting
+softlabel: True # True for soft labels, False for hard labels
+multiview: True # True for multi-view training, False for single-view training
+ipot: True # True for using IPOT loss, False for not using
+wpa_weight: 3.0 # Weight for local loss
+uni_modal_text: True # True for using unimodal text loss, False for not using
+early_fusion: True # True for using early fusion, False for not using
+cross_modal_layer: 6 # Layer for cross-modal loss
+aggregate_tokens: False # True for using aggregated tokens, False for not using
+hard_negative: True # Number of hard negatives for each sample, 0 for not using
+itm: True # True for using ITM loss, False for not using
+
+# validation
+valid:
+  dataset: "chexpert"
+  val_batch_size: 100
+  val_step_freq: 400
+  monitor: "val_metric"
+
+
+# load model's weight path, support multiple paths
+load_path:
+  - "/home/data/Jingkai/alex/weight/cross_modal.pth"
+  - "/home/data/Jingkai/alex/pretrain_mmf16x/ckpt/epoch=17-step=33916-val_metric=0.3334.ckpt"
+
+resume_checkpoint: ""  # "/home/data/Jingkai/alex/pretrain_mmf16/ckpt/epoch=14-step=38758-val_metric=0.3341.ckpt"   # Path to checkpoint to resume training; empty string means no checkpoint is loaded
+
+
+# dataset path
+data_path: "/home/data/Jingkai/alex/mimic"
+concat: True
+
+
+# output setting
+save_path: "/home/data/Jingkai/alex/pretrain_mmf16x/"
+log_freq: 5
+
+
+# training parameters
+max_epochs: 5
+stage: 1
+accumulate_grad_steps: 1
+lr: 4.0e-6
+weight_decay: 0.02
+
+batch_size: 64
+
+num_gpus: 4
+device:
+  - 0
+  - 1
+  - 4
+  - 5
+
+precision: 16-mixed
