@@ -1,4 +1,4 @@
-# **[CVPR 2025] AMiF**
+# [CVPR 2025] Alignment, Mining and Fusion: Representation Alignment with Hard Negative Mining and Selective Knowledge Fusion for Medical Visual Question Answering
 [AMiF Paper URL](https://openaccess.thecvf.com/content/CVPR2025/papers/Zou_Alignment_Mining_and_Fusion_Representation_Alignment_with_Hard_Negative_Mining_CVPR_2025_paper.pdf)
 
 The Project will be updated continuously.
